@@ -1,0 +1,39 @@
+services:
+  # Microserviço Java de Emissão de NFS-e (Blue Energia)
+  nfse-service:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    container_name: blue-nfse-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DATABASE_URL=jdbc:sqlite:/app/data/nfse.db
+      - CERTIFICADO_PATH=/certs/certificado.pfx
+      - CERTIFICADO_SENHA=${CERTIFICADO_SENHA}
+      - CADEIA_CERTIFICADOS_PATH=/certs/cacerts.jks
+      - CADEIA_CERTIFICADOS_SENHA=${CADEIA_CERTIFICADOS_SENHA}
+      - AMBIENTE_HOMOLOGACAO=${AMBIENTE_HOMOLOGACAO:-true}
+      - PRESTADOR_CNPJ=${PRESTADOR_CNPJ:-62967464000129}
+      - PRESTADOR_IM=${PRESTADOR_IM:-428469638}
+      - PRESTADOR_MUNICIPIO_IBGE=${PRESTADOR_MUNICIPIO_IBGE:-2105302}
+      - DPS_SERIE=${DPS_SERIE:-70000}
+      - DPS_NUMERO_INICIAL=${DPS_NUMERO_INICIAL:-218}
+      - API_KEY=${API_KEY:-blue-nfse-secret-key}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-}
+    volumes:
+      # Certificados montados em modo somente leitura (ro)
+      - ./certs:/certs:ro
+      # Banco SQLite persistente
+      - ./data:/app/data
+
+  # Túnel Cloudflare para expor o microserviço com HTTPS seguro
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: blue-nfse-tunnel
+    restart: unless-stopped
+    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - nfse-service
