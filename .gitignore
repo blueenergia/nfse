@@ -243,3 +243,38 @@ buildNumber.properties
 
 # Classes de testes de envio
 T3wTest.java
+
+### Certificados Digitais, Keystores e Chaves Privadas (Segurança Fiscal) ###
+*.pfx
+*.p12
+*.jks
+*.keystore
+*.pem
+*.key
+*.crt
+*.cer
+cacerts.jks
+certificado.pfx
+
+### Credenciais, Variáveis de Ambiente e Segredos ###
+.env
+.env.*
+*.env
+!*.env.example
+*.secret
+*credential*.json
+*service-account*.json
+firebase-adminsdk*.json
+
+### IDEs e Editores ###
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+
+### Documentos e Logs temporários de emissão/testes ###
+*.log
+hs_err_pid*
+replay_pid*
+/output/
+/temp/
