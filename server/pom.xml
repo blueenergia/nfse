@@ -26,7 +26,7 @@
         <dependency>
             <groupId>io.github.t3wv</groupId>
             <artifactId>nfse</artifactId>
-            <version>1.0.58-SNAPSHOT</version>
+            <version>1.0.59-SNAPSHOT</version>
         </dependency>
 
         <!-- Servidor HTTP REST leve -->
