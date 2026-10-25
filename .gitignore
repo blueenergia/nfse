@@ -278,3 +278,4 @@ hs_err_pid*
 replay_pid*
 /output/
 /temp/
+*.db
