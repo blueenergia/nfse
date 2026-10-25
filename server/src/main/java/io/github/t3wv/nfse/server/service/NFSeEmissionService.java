@@ -4,6 +4,7 @@ import io.github.t3wv.nfse.NFSeConfig;
 import io.github.t3wv.nfse.nacional.WSFacade;
 import io.github.t3wv.nfse.nacional.classes.nfsenacional.*;
 import io.github.t3wv.nfse.server.config.AppConfig;
+import io.github.t3wv.nfse.server.config.BlueNFSeConfig;
 import io.github.t3wv.nfse.server.db.Database;
 import io.github.t3wv.nfse.server.model.AssociadoDTO;
 import io.github.t3wv.nfse.server.model.EmissaoRequest;
@@ -47,7 +48,7 @@ public class NFSeEmissionService {
                 return;
             }
 
-            NFSeConfig nfseConfig = new NFSeConfig(
+            NFSeConfig nfseConfig = new BlueNFSeConfig(
                     appConfig.getCertificadoPath(),
                     appConfig.getCertificadoSenha(),
                     appConfig.getCadeiaCertificadosPath(),
@@ -120,7 +121,7 @@ public class NFSeEmissionService {
                 try {
                     var nfseXml = sucesso.getNFSeXMLObject();
                     if (nfseXml != null && nfseXml.getInfNFSe() != null) {
-                        numeroNota = nfseXml.getInfNFSe().getnNFSe();
+                        numeroNota = nfseXml.getInfNFSe().getNumeroNFSe();
                     }
                 } catch (Exception e) {
                     LOGGER.warn("Não foi possível extrair número direto do XML da nota, usando ID da DPS", e);
@@ -230,9 +231,9 @@ public class NFSeEmissionService {
         // Prestador: Blue Energia LTDA (Imperatriz - MA)
         NFSeSefinNacionalInfoPrestador prestador = new NFSeSefinNacionalInfoPrestador()
                 .setCNPJ(appConfig.getPrestadorCnpj())
-                .setInscricaoMunicipal(appConfig.getPrestadorInscricaoMunicipal())
+                .setIM(appConfig.getPrestadorInscricaoMunicipal())
                 .setRegimeTributario(new NFSeSefinNacionalRegTrib()
-                        .setOpSimplesNacional(NFSeSefinNacionalRegimeTributarioSituacaoSimplesNacional.OPTANTE_ME_EPP)
+                        .setOpSimplesNacional(NFSeSefinNacionalRegimeTributarioSituacaoSimplesNacional.ME_EPP)
                         .setRegimeEspecialTributacao(NFSeSefinNacionalRegimeTributarioRegimeEspecialTributacao.NENHUM));
 
         // Serviço: Código 10.02.02 / NBS 1.1103.22.00

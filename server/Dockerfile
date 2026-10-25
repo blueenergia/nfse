@@ -1,7 +1,7 @@
 # ==========================================
 # Estágio 1: Build do JAR com Maven
 # ==========================================
-FROM maven:3.9-eclipse-temurin-17-alpine AS builder
+FROM maven:3.9-eclipse-temurin-17 AS builder
 WORKDIR /app
 
 # 1. Copia o pom.xml e código fonte da biblioteca base (nfse)
@@ -16,9 +16,9 @@ COPY server/src ./src
 RUN mvn clean package -DskipTests
 
 # ==========================================
-# Estágio 2: Imagem final leve de execução
+# Estágio 2: Imagem final de execução (multi-arch Apple Silicon & x86_64)
 # ==========================================
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 
 # Cria diretórios de dados persistentes e certificados
